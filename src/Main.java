@@ -1,4 +1,6 @@
 
+import java.math.BigDecimal;
+
 void main(String[] args) {
     try {
         Fetcher fetcher = new HttpFetcher(
@@ -6,16 +8,24 @@ void main(String[] args) {
         );
         RatesParser parser = new NbpXmlParser();
         RatesProvider provider = new NbpRatesProvider(fetcher, parser);
+        RatesRepository repository = RatesRepository.getInstance();
+        repository.load(provider);
 
-        for (Currency currency : provider.getRates()) {
-            System.out.printf(
-                    "%s (%s): %s PLN, przelicznik: %d%n",
-                    currency.getName(),
-                    currency.getCode(),
-                    currency.getAverageRatePerUnit(),
-                    currency.getMultiplier()
-            );
-        }
+        InputValidator validator = new InputValidator(repository);
+        BigDecimal amount = validator.parseAmount("100,50");
+        String fromCode = validator.validateCode("EUR");
+        String toCode = validator.validateCode("USD");
+
+        CurrencyConverter converter = new CurrencyConverter(repository);
+        BigDecimal result = converter.convert(amount, fromCode, toCode);
+
+        System.out.printf(
+                "%s %s = %s %s%n",
+                amount,
+                fromCode,
+                result,
+                toCode
+        );
     } catch (RuntimeException e) {
         System.err.println("Nie udało się pobrać kursów walut.");
         System.err.println("Powód: " + e.getMessage());

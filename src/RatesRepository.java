@@ -5,6 +5,7 @@ import java.util.Map;
 
 public class RatesRepository {
     private static final RatesRepository INSTANCE = new RatesRepository();
+
     private Map<String, Currency> rates;
 
     private RatesRepository() {
@@ -24,7 +25,9 @@ public class RatesRepository {
 
     public Currency findByCode(String code) {
         if (rates == null) {
-            throw new IllegalStateException("RatesRepository is not loaded. Call load() first.");
+            throw new IllegalStateException(
+                    "RatesRepository is not loaded. Call load() first."
+            );
         }
 
         Currency currency = rates.get(code);
@@ -40,8 +43,11 @@ public class RatesRepository {
 
     public List<Currency> getAll() {
         if (rates == null) {
-            throw new IllegalStateException("RatesRepository is not loaded. Call load() first.");
+            throw new IllegalStateException(
+                    "RatesRepository is not loaded. Call load() first."
+            );
         }
+
         return new ArrayList<>(rates.values());
     }
 }

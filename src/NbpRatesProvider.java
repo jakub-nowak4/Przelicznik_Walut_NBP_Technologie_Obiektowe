@@ -21,8 +21,16 @@ public class NbpRatesProvider implements RatesProvider {
         }
 
         List<Currency> rates = parser.parse(data);
-        //Add PLN currency to the list of rates
-        rates.add(new Currency("polski złoty", "PLN", new BigDecimal("1.00"), 1));
+        // Add PLN currency to the list of rates.
+        rates.add(
+                new Currency(
+                        "polski złoty",
+                        "PLN",
+                        new BigDecimal("1.00"),
+                        1
+                )
+        );
+
         return rates;
     }
 }

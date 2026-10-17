@@ -6,6 +6,7 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.ByteArrayInputStream;
 import java.math.BigDecimal;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class NbpXmlParser implements RatesParser {
             Document document = builder.parse(
                     new ByteArrayInputStream(
                             data.getBytes(
-                                    java.nio.charset.Charset.forName("ISO-8859-2")
+                                    Charset.forName("ISO-8859-2")
                             )
                     )
             );
